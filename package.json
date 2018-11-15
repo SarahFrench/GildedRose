@@ -1,11 +1,27 @@
 {
-  "name": "guildedrose",
+  "name": "gilded-rose",
   "version": "1.0.0",
-  "description": "Bootcamp Project 6",
-  "main": "index.js",
+  "description": "gilded rose kata in javascript",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
-  "author": "Sarah French",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emilybache/GildedRose-Refactoring-Kata.git"
+  },
+  "keywords": [
+    "kata",
+    "refactor",
+    "gilded-rose"
+  ],
+  "license": "MIT",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/emilybache/GildedRose-Refactoring-Kata/issues"
+  },
+  "homepage": "https://github.com/emilybache/GildedRose-Refactoring-Kata#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
+  }
 }
