@@ -25,7 +25,8 @@ Backstage Passes:
                     - SellIn = -1 Value = 0 as it's the day after the concert
 
 Aged Brie:
-          -increases in quality as it gets older 
+          - increases in quality as it gets older
+          - quality increase is x2 after SellIn=0
 
 
 "do not alter the Item class or Items property"

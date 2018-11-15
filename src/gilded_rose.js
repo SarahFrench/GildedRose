@@ -1,10 +1,42 @@
-class Item {
-  constructor(name, sellIn, quality){
-    this.name = name;
-    this.sellIn = sellIn;
-    this.quality = quality;
+const {Item, Brie, Sulfuras, BackstagePass, Conjured, Default} = require('./classes.js');
+
+function getProductType(name){
+
+  const reBrie = /Brie|Aged Brie/,
+        reBackstage = /Backstage Pass|Backstage/,
+        reSulfuras = /Sulfuras/;
+        reConjured = /Conjured/;
+
+  if (reBrie.exec(name)) {
+    return 'brie'
+  } else if (reBackstage.exec(name)) {
+      return 'backstage'
+    } else if (reSulfuras.exec(name)) {
+        return 'sulfuras'
+      } else if (reConjured.exec(name)) {
+        return 'conjured'
+      } else {
+        return 'default'
+      }
   }
-}
+
+const item1 = new Default('foo', 10, 10);
+const item2 = new Default('bar', 0, 20);
+const item3 = new Default('baz', -1, 2);
+const item4 = new Default('fez', -1, 0);
+const item5 = new Sulfuras('Sulfuras, Hand of Ragnaros', 0, 80);
+const item6 = new Brie('Aged Brie', 0, 10);
+const item7 = new Brie('Aged Brie', 2, 10);
+const item8 = new Backstage('Backstage passes to a TAFKAL80ETC concert', 11, 10)
+const item9 = new Backstage('Backstage passes to a TAFKAL80ETC concert', 10, 10)
+const item10 = new Backstage('Backstage passes to a TAFKAL80ETC concert', 6, 10)
+const item11 = new Backstage('Backstage passes to a TAFKAL80ETC concert', 5, 10)
+const item12 = new Backstage('Backstage passes to a TAFKAL80ETC concert', 3, 10)
+const item13 = new Backstage('Backstage passes to a TAFKAL80ETC concert', 1, 10)
+const item14 = new Backstage('Backstage passes to a TAFKAL80ETC concert', 0, 10)
+
+const testItemList = [item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14 ];
+
 
 class Shop {
   constructor(items=[]){
@@ -60,7 +92,8 @@ class Shop {
     return this.items;
   }
 }
+
 module.exports = {
   Item,
-  Shop
+  Shop,
 }

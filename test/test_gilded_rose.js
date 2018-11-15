@@ -70,7 +70,7 @@ describe("Gilded Rose", function() {
 
   });
 
-  it("Store item names", function() {
+  it("Store correct item names", function() {
   // Arrange
     const gildedRose = new Shop([ new Item("foo", 0, 0) ]);
   //Act
@@ -88,7 +88,7 @@ describe("Gilded Rose", function() {
     expect(items[0].sellIn).to.equal(0);
   });
 
-  it("Updating causes Item Quality to decrease by 1", function() {
+  it("Updating causes default item Quality to decrease by 1", function() {
   // Arrange
     const gildedRose = new Shop([ new Item("foo", 1, 10) ]);
   //Act
@@ -97,7 +97,7 @@ describe("Gilded Rose", function() {
     expect(items[0].quality).to.equal(9);
   });
 
-  it(`When SellIn = 0 Item Quality decreases x2\n\t (for items that aren't Brie, Passes, Sulfuras)`, function() {
+  it(`When SellIn = 0 default item Quality decreases x2\n\t (excludes Brie, Passes, Sulfuras)`, function() {
   // Arrange
     const gildedRose = new Shop([ new Item("foo", 0, 10) ]);
   //Act
@@ -119,24 +119,32 @@ describe("Gilded Rose", function() {
 
   it('Quality does not increase from 50', function() {
   // Arrange
-    const gildedRose = new Shop([ new Item('Aged Brie', 0, 50) ]);
+    const gildedRose = new Shop([ new Item('Aged Brie', 0, 50) , new Item('Backstage passes to a TAFKAL80ETC concert', 2, 50) ]);
   //Act
     const items = gildedRose.updateQuality();
   //Assert
     expect(items[0].name).to.equal('Aged Brie');
     expect(items[0].sellIn).to.equal(-1);
     expect(items[0].quality).to.equal(50);
+
+    expect(items[1].name).to.equal('Backstage passes to a TAFKAL80ETC concert');
+    expect(items[1].sellIn).to.equal(1);
+    expect(items[1].quality).to.equal(50);
   });
 
   it('Quality is not increased to >50', function() {
   // Arrange
-    const gildedRose = new Shop([ new Item('Aged Brie', 0, 49) ]);
+  const gildedRose = new Shop([ new Item('Aged Brie', 0, 49) , new Item('Backstage passes to a TAFKAL80ETC concert', 2, 49) ]);
   //Act
     const items = gildedRose.updateQuality();
   //Assert
     expect(items[0].name).to.equal('Aged Brie');
     expect(items[0].sellIn).to.equal(-1);
     expect(items[0].quality).to.equal(50);
+
+    expect(items[1].name).to.equal('Backstage passes to a TAFKAL80ETC concert');
+    expect(items[1].sellIn).to.equal(1);
+    expect(items[1].quality).to.equal(50);
   });
 
 
@@ -168,15 +176,26 @@ describe("Gilded Rose", function() {
 
   describe('Aged Brie', () => {
 
-    it('Aged Brie  ', function() {
+    it('Aged Brie increases Quality +1 when SellIn >=0', function() {
       // Arrange
-      const gildedRose = new Shop([ new Item('Sulfuras, Hand of Ragnaros', 0, 80) ]);
+      const gildedRose = new Shop([ new Item('Aged Brie', 1, 30) ]);
       // Act
       const items = gildedRose.updateQuality();
       // Assert
-      expect(items[0].name).to.equal('Sulfuras, Hand of Ragnaros');
+      expect(items[0].name).to.equal('Aged Brie');
       expect(items[0].sellIn).to.equal(0);
-      expect(items[0].quality).to.equal(80);
+      expect(items[0].quality).to.equal(31);
+    });
+
+    it('Aged Brie increases Quality +2 when aging and SellIn <0', function() {
+      // Arrange
+      const gildedRose = new Shop([ new Item('Aged Brie', 0, 30) ]);
+      // Act
+      const items = gildedRose.updateQuality();
+      // Assert
+      expect(items[0].name).to.equal('Aged Brie');
+      expect(items[0].sellIn).to.equal(-1);
+      expect(items[0].quality).to.equal(32);
     });
 
   });
@@ -192,6 +211,17 @@ describe("Gilded Rose", function() {
       expect(items[0].name).to.equal('Backstage passes to a TAFKAL80ETC concert');
       expect(items[0].sellIn).to.equal(-1);
       expect(items[0].quality).to.equal(0);
+    });
+
+    it('Quality increases by 1 when SellIn >10', function() {
+      // Arrange
+      const gildedRose = new Shop([ new Item('Backstage passes to a TAFKAL80ETC concert', 15, 30) ]);
+      // Act
+      const items = gildedRose.updateQuality();
+      // Assert
+      expect(items[0].name).to.equal('Backstage passes to a TAFKAL80ETC concert');
+      expect(items[0].sellIn).to.equal(14);
+      expect(items[0].quality).to.equal(31);
     });
 
     it('Quality increases by 2 when SellIn <=10, >5 days', function() {
