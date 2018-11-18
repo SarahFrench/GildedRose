@@ -6,17 +6,17 @@ class Item {
   }
 
   updateSellIn(type){
-    if (type !=== 'sulfuras') {
+    if (type !== 'sulfuras') {
     this.sellIn = this.sellIn - 1;
     }
   }
 
   forceQualityBounds(type){
 
-    if (type !=== 'sulfuras') {
+    if (type !== 'sulfuras') {
 
     if (this.quality > 50){
-      console.log(`Quality of ${this.name} was ${this.quality}`)
+      // console.log(`Quality of ${this.name} was ${this.quality}`)
       this.quality = 50;
        }
 
@@ -34,8 +34,8 @@ class Brie extends Item{
   }
 
   update(){
-    super.updateSellIn(this.type)
-    this.updateQuality()
+    this.updateQuality();
+    super.updateSellIn(this.type);
   }
 
   updateQuality(){
@@ -57,8 +57,8 @@ class Sulfuras extends Item{
   }
 
   update(){
-    super.updateSellIn(this.type)
-    this.updateQuality()
+    this.updateQuality();
+    super.updateSellIn(this.type);
   }
 
   updateQuality(){
@@ -74,12 +74,12 @@ class BackstagePass extends Item{
   }
 
   update(){
-    super.updateSellIn(this.type)
     this.updateQuality()
+    super.updateSellIn(this.type)
   }
 
   updateQuality(){
-    if (this.sellIn < 0){
+    if (this.sellIn <= 0){
       this.quality = 0;
     } else if (this.sellIn > 10 ){ //may get issue here if >0 or >=0 correct
       this.quality += 1;
@@ -101,33 +101,120 @@ class Conjured extends Item{
   }
 
   update(){
-    super.updateSellIn(this.type)
     this.updateQuality()
+    super.updateSellIn(this.type)
   }
 
   updateQuality(){
-    this.quality -=2;
+    if (this.sellIn > 0){
+      this.quality -=2;
+    } else {
+      this.quality -=4;
+    }
 
     super.forceQualityBounds(this.type)
   }
 
 }
 
-class Default extends Item{
+class DefaultItem extends Item{
   constructor(name, sellIn, quality){
     super(name, sellIn, quality)
     this.type = 'default'
   }
 
   update(){
-    super.updateSellIn(this.type)
     this.updateQuality()
+    super.updateSellIn(this.type)
   }
 
   updateQuality(){
-    this.quality -=1;
+    if (this.sellIn > 0){
+      this.quality -=1;
+    } else if (this.sellIn <= 0){
+      this.quality -=2;
+    }
 
     super.forceQualityBounds(this.type)
   }
 
+}
+
+class ShopNew { //New version
+  constructor(items=[]){
+    this.items = items;
+  }
+
+  updateQuality(){
+    this.items.forEach( item =>{
+        item.update();
+    })
+    return this.items;
+  }
+}
+
+class Shop {
+  constructor(items=[]){
+    this.items = items;
+  }
+  updateQuality() {
+    for (var i = 0; i < this.items.length; i++) {
+      if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
+        if (this.items[i].quality > 0) {
+          if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
+            this.items[i].quality = this.items[i].quality - 1;
+          }
+        }
+      } else {
+        if (this.items[i].quality < 50) {
+          this.items[i].quality = this.items[i].quality + 1;
+          if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
+            if (this.items[i].sellIn < 11) {
+              if (this.items[i].quality < 50) {
+                this.items[i].quality = this.items[i].quality + 1;
+              }
+            }
+            if (this.items[i].sellIn < 6) {
+              if (this.items[i].quality < 50) {
+                this.items[i].quality = this.items[i].quality + 1;
+              }
+            }
+          }
+        }
+      }
+      if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
+        this.items[i].sellIn = this.items[i].sellIn - 1;
+      }
+      if (this.items[i].sellIn < 0) {
+        if (this.items[i].name != 'Aged Brie') {
+          if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
+            if (this.items[i].quality > 0) {
+              if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
+                this.items[i].quality = this.items[i].quality - 1;
+              }
+            }
+          } else {
+            this.items[i].quality = this.items[i].quality - this.items[i].quality;
+          }
+        } else {
+          if (this.items[i].quality < 50) {
+            this.items[i].quality = this.items[i].quality + 1;
+          }
+        }
+      }
+    }
+
+    return this.items;
+  }
+} //Legacy Code
+
+module.exports = {
+  Item,
+  Brie,
+  Sulfuras,
+  BackstagePass,
+  Conjured,
+  DefaultItem,
+  ShopNew,
+  Shop,
 }

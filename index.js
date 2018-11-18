@@ -1,86 +1,88 @@
-// const testItemList = require('./test/item_lists.js').testItemList;
-// const {Shop, Item} = require('./src/gilded_rose.js');
+//This is an area for running the shop update and getting output to build master tests from, etc.
+//Also this file is REQUIRED for mocha testing
 
-//
-// let gildedRose = new Shop(testItemList);
-//
-// // console.log(testItemList)
-//
-//
-// items = gildedRose.updateQuality();
-//
-// // console.log(items)
-//
-//
-// class Item {
-//   constructor(name, sellIn, quality){
-//     this.name = name;
-//     this.sellIn = sellIn;
-//     this.quality = quality;
-//   }
-//
-//   updateSellIn(type){
-//     if (type !=== 'sulfuras') {
-//     this.sellIn = this.sellIn - 1;
-//     }
-//   }
-//
-//   forceQualityBounds(type){
-//
-//     if (type !=== 'sulfuras') {
-//
-//     if (this.quality > 50){
-//       console.log(`Quality of ${this.name} was ${this.quality}`)
-//       this.quality = 50;
-//        }
-//
-//     if (this.quality < 0){
-//        this.quality = 0;
-//         }
-//       }
-//     }
-// }
-//
-//
-// class Brie extends Item{
-//   constructor(name, sellIn, quality){
-//     super(name, sellIn, quality)
-//     this.type = 'brie'
-//   }
-//
-//   update(){
-//     super.updateSellIn()
-//     this.updateQuality()
-//   }
-//
-//
-//
-//   updateQuality(){
-//     if (this.sellIn > 0 ){ //may get issue here if >0 or >=0 correct
-//       this.quality += 1;
-//     } else if(this.sellIn <=0){ //ditto
-//       this.quality += 2;
-//     }
-//
-//     super.forceQualityBounds(this.type)
-//   }
-//
-// }
-//
-// brie = new Brie ('Aged Brie', 0, 60)
-//
-// console.log(brie);
-//
-// brie.update()
-//
-//  console.log(brie);
+//=========================CONSTANTS=========================
 
-class Shop {
-  constructor(items=[]){
-    this.items = items;
+const testItemListForLegacyVersion = require('./test/item_lists.js').testItemListForLegacyVersion;
+const testItemListForNewVersion = require('./test/item_lists.js').testItemListForNewVersion;
+const {Item, Brie, Sulfuras, BackstagePass, Conjured, DefaultItem, Shop, ShopNew} = require('./src/classes.js');
+
+const dictionaryProductTypes = new Map([ //want to make it so getProductType() uses this instead of being hard coded. Can't get values to work as RegEx.
+  ['brie', /Brie|Aged Brie/],
+  ['backstage', /Backstage Pass|Backstage/],
+  ['sulfuras', /Sulfuras/],
+  ['conjured', /Conjured/]
+  ]);
+
+//=========================FUNCTIONS=========================
+
+function getProductType(name){
+
+  const reBrie = /Brie|Aged Brie/,
+        reBackstage = /Backstage Pass|Backstage/,
+        reSulfuras = /Sulfuras/;
+        reConjured = /Conjured/;
+
+  if (reBrie.exec(name)) {
+    return 'brie'
+  } else if (reBackstage.exec(name)) {
+      return 'backstage'
+    } else if (reSulfuras.exec(name)) {
+        return 'sulfuras'
+      } else if (reConjured.exec(name)) {
+        return 'conjured'
+      } else {
+        return 'default'
+      }
+  }
+
+function convertDetailsToTypeObject(item){
+  let itemName = item[0];
+  let itemType = getProductType(itemName);
+  switch (itemType){
+    case 'brie':
+      return new Brie(item[0], item[1], item[2]);
+      break;
+    case 'sulfuras':
+      return new Sulfuras(item[0], item[1], item[2]);
+      break;
+    case 'backstage':
+      return new BackstagePass(item[0], item[1], item[2]);
+      break;
+    case 'conjured':
+      return new Conjured(item[0], item[1], item[2]);
+      break;
+    default:
+      return new DefaultItem(item[0], item[1], item[2]);
+      break;
   }
 }
 
-let shop = new Shop();
+function convertMultiDimensionalArrayToItemObjects(array){
+  let items = [];
+  array.forEach( item => {
+    items.push(convertDetailsToTypeObject(item));
+  });
+  return items;
+} //can automatically create Items of the correct type based on the item's name
 
-console.log(shop.items);
+
+//=========================TEST AREA=========================
+
+let itemArray = [['foo', 10, 10], ['Backstage passes to a TAFKAL80ETC concert', 11, 10],['Aged Brie', 20, 10], ['Sulfuras, Hand of Ragnaros', 0, 80], ['Conjured Underpants', 14, 50]];
+let itemObjectArray = convertMultiDimensionalArrayToItemObjects(itemArray);
+console.log(itemArray)
+console.log(itemObjectArray)
+
+console.log(dictionaryProductTypes)
+
+// let gildedRoseNew = new ShopNew(testItemListForNewVersion);
+// console.log('original list:')
+// console.log(testItemListForNewVersion)
+//
+// items = gildedRoseNew.updateQuality()
+//
+// console.log('after 1 day/update:')
+// console.log(items)
+//
+// let gildedRose = new Shop(testItemListForLegacyVersion);
