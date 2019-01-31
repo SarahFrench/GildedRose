@@ -117,6 +117,7 @@ class Conjured extends Item{
 
 }
 
+//This class is for any item which isn't a special type, e.g. Brie or Sulfuras
 class DefaultItem extends Item{
   constructor(name, sellIn, quality){
     super(name, sellIn, quality)
@@ -140,7 +141,8 @@ class DefaultItem extends Item{
 
 }
 
-class ShopNew { //New version
+//This is the new Shop class I made which uses all my classes defined above
+class ShopNew {
   constructor(items=[]){
     this.items = items;
   }
@@ -153,6 +155,7 @@ class ShopNew { //New version
   }
 }
 
+//This is the OLD Shop class, supplied at the beginning of the exercise. I.e. legacy code from before refactoring.
 class Shop {
   constructor(items=[]){
     this.items = items;
@@ -206,7 +209,7 @@ class Shop {
 
     return this.items;
   }
-} //Legacy Code
+}
 
 module.exports = {
   Item,
