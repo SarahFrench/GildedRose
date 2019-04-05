@@ -1,5 +1,37 @@
-class Item {
+// class Item {
+//   constructor(name, sellIn, quality){
+//     this.name = name;
+//     this.sellIn = sellIn;
+//     this.quality = quality;
+//   }
+//
+//   updateSellIn(type){
+//     if (type !== 'sulfuras') {
+//     this.sellIn = this.sellIn - 1;
+//     }
+//   }
+//
+//   forceQualityBounds(type){
+//
+//     if (type !== 'sulfuras') {
+//
+//     if (this.quality > 50){
+//       // console.log(`Quality of ${this.name} was ${this.quality}`)
+//       this.quality = 50;
+//        }
+//
+//     if (this.quality < 0){
+//        this.quality = 0;
+//         }
+//       }
+//     }
+// }
+
+class Brie {
   constructor(name, sellIn, quality){
+    // super(name, sellIn, quality)
+    this.type = 'brie'
+    //
     this.name = name;
     this.sellIn = sellIn;
     this.quality = quality;
@@ -25,17 +57,10 @@ class Item {
         }
       }
     }
-}
-
-class Brie extends Item{
-  constructor(name, sellIn, quality){
-    super(name, sellIn, quality)
-    this.type = 'brie'
-  }
 
   update(){
     this.updateQuality();
-    super.updateSellIn(this.type);
+    this.updateSellIn(this.type);
   }
 
   updateQuality(){
@@ -44,13 +69,12 @@ class Brie extends Item{
     } else if(this.sellIn <=0){ //ditto
       this.quality += 2;
     }
-
-    super.forceQualityBounds(this.type)
+    this.forceQualityBounds(this.type)
   }
 
 }
 
-class Sulfuras extends Item{
+class Sulfuras extends Brie{
   constructor(name, sellIn, quality){
     super(name, sellIn, quality)
     this.type = 'sulfuras'
@@ -67,7 +91,7 @@ class Sulfuras extends Item{
 
 }
 
-class BackstagePass extends Item{
+class BackstagePass extends Brie{
   constructor(name, sellIn, quality){
     super(name, sellIn, quality)
     this.type = 'backstage'
@@ -94,7 +118,7 @@ class BackstagePass extends Item{
 
 }
 
-class Conjured extends Item{
+class Conjured extends Brie{
   constructor(name, sellIn, quality){
     super(name, sellIn, quality)
     this.type = 'conjured'
@@ -118,7 +142,7 @@ class Conjured extends Item{
 }
 
 //This class is for any item which isn't a special type, e.g. Brie or Sulfuras
-class DefaultItem extends Item{
+class DefaultItem extends Brie{
   constructor(name, sellIn, quality){
     super(name, sellIn, quality)
     this.type = 'default'
@@ -212,7 +236,7 @@ class Shop {
 }
 
 module.exports = {
-  Item,
+  // Item,
   Brie,
   Sulfuras,
   BackstagePass,

@@ -140,7 +140,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
   it("Store correct item names", function() {
   // Arrange
-    const gildedRose = new Shop([ new Item("foo", 0, 0) ]);
+    const gildedRose = new Shop([ new Brie("foo", 0, 0) ]);
   //Act
     const items = gildedRose.updateQuality();
   //Assert
@@ -149,7 +149,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
   it("Updating causes Item SellIn to decrease", function() {
   // Arrange
-    const gildedRose = new Shop([ new Item("foo", 1, 10) ]);
+    const gildedRose = new Shop([ new Brie("foo", 1, 10) ]);
   //Act
     const items = gildedRose.updateQuality();
   //Assert
@@ -158,7 +158,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
   it("Updating causes default item Quality to decrease by 1", function() {
   // Arrange
-    const gildedRose = new Shop([ new Item("foo", 1, 10) ]);
+    const gildedRose = new Shop([ new Brie("foo", 1, 10) ]);
   //Act
     const items = gildedRose.updateQuality();
   //Assert
@@ -167,7 +167,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
   it(`When SellIn = 0 default item Quality decreases x2\n\t (excludes Brie, Passes, Sulfuras)`, function() {
   // Arrange
-    const gildedRose = new Shop([ new Item("foo", 0, 10) ]);
+    const gildedRose = new Shop([ new Brie("foo", 0, 10) ]);
   //Act
     const items = gildedRose.updateQuality();
   //Assert
@@ -176,7 +176,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
   it('Quality does not decrease from 0', function() {
   // Arrange
-    const gildedRose = new Shop([ new Item("foo", 0, 0) ]);
+    const gildedRose = new Shop([ new Brie("foo", 0, 0) ]);
   //Act
     const items = gildedRose.updateQuality();
   //Assert
@@ -187,7 +187,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
   it('Quality does not increase from 50', function() {
   // Arrange
-    const gildedRose = new Shop([ new Item('Aged Brie', 0, 50) , new Item('Backstage passes to a TAFKAL80ETC concert', 2, 50) ]);
+    const gildedRose = new Shop([ new Brie('Aged Brie', 0, 50) , new Brie('Backstage passes to a TAFKAL80ETC concert', 2, 50) ]);
   //Act
     const items = gildedRose.updateQuality();
   //Assert
@@ -202,7 +202,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
   it('Quality is not increased to >50', function() {
   // Arrange
-  const gildedRose = new Shop([ new Item('Aged Brie', 0, 49) , new Item('Backstage passes to a TAFKAL80ETC concert', 2, 49) ]);
+  const gildedRose = new Shop([ new Brie('Aged Brie', 0, 49) , new Brie('Backstage passes to a TAFKAL80ETC concert', 2, 49) ]);
   //Act
     const items = gildedRose.updateQuality();
   //Assert
@@ -220,7 +220,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
     it("Maintains quality = 80 after updating", function() {
       // Arrange
-      const gildedRose = new Shop([ new Item('Sulfuras, Hand of Ragnaros', 0, 80) ]);
+      const gildedRose = new Shop([ new Brie('Sulfuras, Hand of Ragnaros', 0, 80) ]);
       // Act
       const items = gildedRose.updateQuality();
       // Assert
@@ -231,7 +231,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
     it("Maintains SellIn = 0 after updating", function() {
       // Arrange
-      const gildedRose = new Shop([ new Item('Sulfuras, Hand of Ragnaros', 0, 80) ]);
+      const gildedRose = new Shop([ new Brie('Sulfuras, Hand of Ragnaros', 0, 80) ]);
       // Act
       const items = gildedRose.updateQuality();
       // Assert
@@ -246,7 +246,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
     it('Aged Brie increases Quality +1 when SellIn >=0', function() {
       // Arrange
-      const gildedRose = new Shop([ new Item('Aged Brie', 1, 30) ]);
+      const gildedRose = new Shop([ new Brie('Aged Brie', 1, 30) ]);
       // Act
       const items = gildedRose.updateQuality();
       // Assert
@@ -257,7 +257,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
     it('Aged Brie increases Quality +2 when aging and SellIn <0', function() {
       // Arrange
-      const gildedRose = new Shop([ new Item('Aged Brie', 0, 30) ]);
+      const gildedRose = new Shop([ new Brie('Aged Brie', 0, 30) ]);
       // Act
       const items = gildedRose.updateQuality();
       // Assert
@@ -272,7 +272,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
     it('Quality drops to 0 when SellIn =< 0', function() {
       // Arrange
-      const gildedRose = new Shop([ new Item('Backstage passes to a TAFKAL80ETC concert', 0, 50) ]);
+      const gildedRose = new Shop([ new Brie('Backstage passes to a TAFKAL80ETC concert', 0, 50) ]);
       // Act
       const items = gildedRose.updateQuality();
       // Assert
@@ -283,7 +283,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
     it('Quality increases by 1 when SellIn >10', function() {
       // Arrange
-      const gildedRose = new Shop([ new Item('Backstage passes to a TAFKAL80ETC concert', 15, 30) ]);
+      const gildedRose = new Shop([ new Brie('Backstage passes to a TAFKAL80ETC concert', 15, 30) ]);
       // Act
       const items = gildedRose.updateQuality();
       // Assert
@@ -294,7 +294,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
     it('Quality increases by 2 when SellIn <=10, >5 days', function() {
       // Arrange
-      const gildedRose = new Shop([ new Item('Backstage passes to a TAFKAL80ETC concert', 6, 30) ]);
+      const gildedRose = new Shop([ new Brie('Backstage passes to a TAFKAL80ETC concert', 6, 30) ]);
       // Act
       const items = gildedRose.updateQuality();
       // Assert
@@ -305,7 +305,7 @@ describe("Gilded Rose - Legacy Verson", function() {
 
     it('Quality increases by 3 when SellIn <=5, >0 days', function() {
       // Arrange
-      const gildedRose = new Shop([ new Item('Backstage passes to a TAFKAL80ETC concert', 1, 30) ]);
+      const gildedRose = new Shop([ new Brie('Backstage passes to a TAFKAL80ETC concert', 1, 30) ]);
       // Act
       const items = gildedRose.updateQuality();
       // Assert
