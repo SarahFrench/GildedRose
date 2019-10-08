@@ -22,6 +22,7 @@
   "homepage": "https://github.com/emilybache/GildedRose-Refactoring-Kata#readme",
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^6.5.1",
     "mocha": "^5.2.0"
   }
 }
