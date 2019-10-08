@@ -2,11 +2,11 @@
 //Also this file is REQUIRED for mocha testing
 
 //=========================IMPORTS=========================
-const {Item, Brie, Sulfuras, BackstagePass, Conjured, DefaultItem, Shop, ShopNew} = require('./src/classes.js');
-const testItemListForLegacyVersion = require('./test/item_lists.js').testItemListForLegacyVersion;
-const testItemListForNewVersion = require('./test/item_lists.js').testItemListForNewVersion;
-const testItemListArray = require('./test/item_lists.js').testItemListArray;
-const convertItemArrayToItemObject = require('./src/functions.js').convertItemArrayToItemObject;
+const {Item, Brie, Sulfuras, BackstagePass, Conjured, DefaultItem, Shop, ShopNew} = require("./src/classes.js");
+const testItemListForLegacyVersion = require("./test/item_lists.js").testItemListForLegacyVersion;
+const testItemListForNewVersion = require("./test/item_lists.js").testItemListForNewVersion;
+const testItemListArray = require("./test/item_lists.js").testItemListArray;
+const convertItemArrayToItemObject = require("./src/functions.js").convertItemArrayToItemObject;
 
 
 //=========================EXECUTED CODE=========================
@@ -16,13 +16,13 @@ let itemObjectArray = convertItemArrayToItemObject(testItemListArray);
 
 
 let gildedRoseNew = new ShopNew(itemObjectArray);
-console.log('original list:')
-console.log(testItemListForNewVersion)
+console.log("\noriginal list:");
+console.log(testItemListForNewVersion);
 
-items = gildedRoseNew.updateQuality()
+let items = gildedRoseNew.updateQuality();
 
-console.log('after 1 day/update:')
-console.log(items)
+console.log("\nafter 1 day/update:");
+console.log(items);
 
 //This is the original set up of the shop - legacy code defining shop class and items
 let gildedRose = new Shop(testItemListForLegacyVersion);
